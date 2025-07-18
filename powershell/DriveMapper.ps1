@@ -101,7 +101,7 @@ $mainFormWindowHeight = $quitButtonY + ($buttonHeight * 2) + ($sectionPadding * 
 Write-Host "Main Height: $quitButtonY $mainFormWindowHeight" -ForegroundColor White
 # Create Form
 $form = New-Object System.Windows.Forms.Form
-$form.Text = "API Drive Mapper"
+$form.Text = "Drive Mapper"
 $form.Size = New-Object System.Drawing.Size($mainFormWindowWidth,$mainFormWindowHeight)
 $form.StartPosition = "CenterScreen"
 
