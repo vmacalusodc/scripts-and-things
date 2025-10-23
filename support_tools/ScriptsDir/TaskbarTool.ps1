@@ -1,18 +1,4 @@
-#  $$$$$$\  $$$$$$$\ $$$$$$\
-#  $$  __$$\ $$  __$$\\_$$  _|
-#  $$ /  $$ |$$ |  $$ | $$ |  
-#  $$$$$$$$ |$$$$$$$  | $$ |  TaskBarTool
-#  $$  __$$ |$$  ____/  $$ |  
-#  $$ |  $$ |$$ |       $$ |  
-#  $$ |  $$ |$$ |     $$$$$$\
-#  \__|  \__|\__|     \______|
-#
-# Version 1.00 (7/14/2025)
-# * Initial Release
-# Version 1.10 (7/14/2025)
-# * Added option to select from available backups.
-#
-# Vincent Macaluso (R3)
+# Vincent Macaluso
 
 function Get-SerialNumber {
     $serial = (Get-WmiObject -Class Win32_BIOS).SerialNumber
@@ -131,3 +117,4 @@ do {
 
 
 } while ($true)
+
