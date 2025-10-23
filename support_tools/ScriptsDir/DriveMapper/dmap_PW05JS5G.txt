@@ -1,3 +1,0 @@
-S: \\eq-fs01.api.int\hercules\Shared
-T: \\AZ-IT01\IT
-X: \\AZ-IT01\installs
