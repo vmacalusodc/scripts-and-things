@@ -1,284 +1,0 @@
-1:24:45 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  ThinkPad USB-C Universal Dock FW utility V3.0.96
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:24:45 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  Package including (DP hub : 5.07.007, USB hub : 5154, DMC : dm.0.2.088, PD : md.5.4.109, Audio codec : 49-0E-43)
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:24:45 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  Read USB Selective Suspend Values
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:24:45 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  AC Values : Enable
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:24:45 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  DC Values : Enable
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:24:45 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  Write USB Selective Suspend Values Disable
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:24:46 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  Checking current Dock FW version :
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:24:46 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  VID:17EF
-║  PID:30A9
-║  ************************************
-║    Querying EZ-PD Dock status . . .
-║  ************************************
-║  *******************************************************************************
-║  *                 EZ-PD Dock Firmware Update Tool v1.4.0.2 (Test Version)    *
-║  *******************************************************************************
-║  Opening handle to dock
-║  Connecting to the DMC
-║  =================================DOCK IDENTITY==================================
-║  CDTT version     : 1
-║  VID              : 0x17EF
-║  PID              : 0x30A9
-║  Vendor           : Lenovo
-║  Product          : ThinkPad USB-C Dock BillBoard
-║  Signed FW Update : TRUE
-║  ==============================CURRENT DOCK STATUS===============================
-║  Last FW update status		: Phase-2 Update Complete (0x85)
-║  Device count			: 7
-║  Composite dock image version	: 0.0.0.0
-║  --------------------------------------------------------------------------------
-║  	Device#0
-║  	Device type                   : DMC
-║  	Component ID                  : 0
-║  	Current image                 : Image-1
-║  	Bootloader Version
-║  		Base Version          : 3.1.0.1073
-║  		Application Version   : dm.0.0.1
-║  	Image-0 Status                : VALID (0x1)
-║  		Base Version          : 3.3.0.1746
-║  		Application Version   : dm.0.2.77
-║  	Image-1 Status                : VALID (0x1)
-║  		Base Version          : 3.3.0.1746
-║  		Application Version   : dm.0.2.77
-║  --------------------------------------------------------------------------------
-║  	Device#2
-║  	Device type                   : CCG4
-║  	Component ID                  : 2
-║  	Current image                 : Image-1
-║  	Bootloader Version
-║  		Base Version          : 3.1.0.1067
-║  		Application Version   : md.0.0.1
-║  	Image-0 Status                : VALID (0x1)
-║  		Base Version          : 3.2.1.1652
-║  		Application Version   : md.3.0.3
-║  	Image-1 Status                : VALID (0x1)
-║  		Base Version          : 3.2.1.1652
-║  		Application Version   : md.5.4.87
-║  --------------------------------------------------------------------------------
-║  	Device#3
-║  	Device type                   : Conexant Audio Codec (CX21985)
-║  	Component ID                  : 3
-║  	Current image                 : Image-0
-║  	Image-0 Status                : VALID (0x1)
-║  		Version               : 73.14.65
-║  --------------------------------------------------------------------------------
-║  	Device#4
-║  	Device type                   : VMM5320 (MCU)
-║  	Component ID                  : 4
-║  	Current image                 : Image-0
-║  	Bootloader Version
-║  		Version               : 0.0.0
-║  	Image-0 Status                : VALID (0x1)
-║  		Version               : 5.6.1
-║  	Image-1 Status                : INVALID (0x2)
-║  	(Last known good version)
-║  		Version               : 0.0.0
-║  --------------------------------------------------------------------------------
-║  	Device#5
-║  	Device type                   : VMM5320 (ESM)
-║  	Component ID                  : 5
-║  	Current image                 : Image-0
-║  	Image-0 Status                : VALID (0x1)
-║  		Version               : 0.0.0
-║  --------------------------------------------------------------------------------
-║  	Device#6
-║  	Device type                   : VIA USB 3.0 HUBS (VL822 Q7/Q8)
-║  	Component ID                  : 6
-║  	Current image                 : Image-0
-║  	Image-0 Status                : VALID (0x1)
-║  		Version               : 0.0.81.20
-║  ================================================================================
-║  ResultCode: 0
-║  "End of batch program."
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:24:46 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  DP hub version : 5.06.001
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:24:46 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  USB hub version : 5114
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:24:47 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  DMC version : dm.0.2.077
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:24:47 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  PD version : md.5.4.87
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:24:47 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  Audio codec version : 49-0E-41
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:25:02 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  Start to update FW...
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:26:39 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  BCD_VALUE:3096
-║  UpdateMode:2
-║  55OR28:55
-║  VID:17EF
-║  PID:30A9
-║  Opening handle to dock
-║  Connecting to the DMC
-║  Found device with given VID/PID
-║  Version update succeeded!
-║  Serial number is not provided
-║  Exiting the application
-║  40AY
-║  ********************************************************
-║    Initiating ThinkPad Universal USB-C Dock Firmware update . . .I
-║  ********************************************************
-║  *******************************************************************************
-║  *                 EZ-PD Dock Firmware Update Tool v1.4.0.2 (Test Version)    *
-║  *******************************************************************************
-║  Opening handle to dock
-║  Connecting to the DMC
-║  =================================DOCK IDENTITY==================================
-║  CDTT version     : 1
-║  VID              : 0x17EF
-║  PID              : 0x30A9
-║  Vendor           : Lenovo
-║  Product          : ThinkPad USB-C Dock BillBoard
-║  Signed FW Update : TRUE
-║  ==============================CURRENT DOCK STATUS===============================
-║  Last FW update status		: Phase-2 Update Complete (0x85)
-║  Device count			: 7
-║  Composite dock image version	: 0.0.0.0
-║  --------------------------------------------------------------------------------
-║  	Device#0
-║  	Device type                   : DMC
-║  	Component ID                  : 0
-║  	Current image                 : Image-1
-║  	Bootloader Version
-║  		Base Version          : 3.1.0.1073
-║  		Application Version   : dm.0.0.1
-║  	Image-0 Status                : VALID (0x1)
-║  		Base Version          : 3.3.0.1746
-║  		Application Version   : dm.0.2.77
-║  	Image-1 Status                : VALID (0x1)
-║  		Base Version          : 3.3.0.1746
-║  		Application Version   : dm.0.2.77
-║  --------------------------------------------------------------------------------
-║  	Device#2
-║  	Device type                   : CCG4
-║  	Component ID                  : 2
-║  	Current image                 : Image-1
-║  	Bootloader Version
-║  		Base Version          : 3.1.0.1067
-║  		Application Version   : md.0.0.1
-║  	Image-0 Status                : VALID (0x1)
-║  		Base Version          : 3.2.1.1652
-║  		Application Version   : md.3.0.3
-║  	Image-1 Status                : VALID (0x1)
-║  		Base Version          : 3.2.1.1652
-║  		Application Version   : md.5.4.87
-║  --------------------------------------------------------------------------------
-║  	Device#3
-║  	Device type                   : Conexant Audio Codec (CX21985)
-║  	Component ID                  : 3
-║  	Current image                 : Image-0
-║  	Image-0 Status                : VALID (0x1)
-║  		Version               : 73.14.65
-║  --------------------------------------------------------------------------------
-║  	Device#4
-║  	Device type                   : VMM5320 (MCU)
-║  	Component ID                  : 4
-║  	Current image                 : Image-0
-║  	Bootloader Version
-║  		Version               : 0.0.0
-║  	Image-0 Status                : VALID (0x1)
-║  		Version               : 5.6.1
-║  	Image-1 Status                : INVALID (0x2)
-║  	(Last known good version)
-║  		Version               : 0.0.0
-║  --------------------------------------------------------------------------------
-║  	Device#5
-║  	Device type                   : VMM5320 (ESM)
-║  	Component ID                  : 5
-║  	Current image                 : Image-0
-║  	Image-0 Status                : VALID (0x1)
-║  		Version               : 0.0.0
-║  --------------------------------------------------------------------------------
-║  	Device#6
-║  	Device type                   : VIA USB 3.0 HUBS (VL822 Q7/Q8)
-║  	Component ID                  : 6
-║  	Current image                 : Image-0
-║  	Image-0 Status                : VALID (0x1)
-║  		Version               : 0.0.81.20
-║  ================================================================================
-║  Loading dock composite image file
-║  Verifying hash of image#0
-║  Segment #0
-║  Segment #1
-║  Verifying hash of image#1
-║  Segment #0
-║  Segment #1
-║  Verifying hash of image#2
-║  Segment #0
-║  Verifying hash of image#3
-║  Segment #0
-║  Segment #1
-║  Verifying hash of image#4
-║  Segment #0
-║  Segment #1
-║  Verifying hash of image#5
-║  Segment #0
-║  Verifying hash of image#6
-║  Segment #0
-║  Verifying hash of image#7
-║  Segment #0
-║  Verifying hash of image#8
-║  Segment #0
-║  Verifying hash of image#9
-║  Segment #0
-║  Starting FW upgrading
-║  Sending start command
-║  Signed FW update in progress
-║  Waiting for FW request
-║  Writing image #2 : SPI-Flash (Comp-id: 1), Image-0
-║  Segment #0
-║  Sending image write command
-║  ****************************************
-║  Waiting for FW request
-║  Firmware install (phase-1) completed
-║  55ResultCode:0
-║  "DMC_PD FW Update Success"
-║  *****************************************************
-║     ThinkPad Universal USB-C Dock Firmware Update Process End
-║  ****************************************************
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:26:39 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  FW update...Pass
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
-1:26:39 PM Friday, March 28, 2025 ▼
-╔════════════════════════════════════════════════════════════════════════════════════════════════════════
-║  Write USB Selective Suspend Values to original value
-╚════════════════════════════════════════════════════════════════════════════════════════════════════════
