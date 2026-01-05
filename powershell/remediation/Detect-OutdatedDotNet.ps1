@@ -3,7 +3,7 @@
 # Returns exit code 0 if no EOL runtimes found (compliant)
 # Logs results to C:\R3-IT\DotNetDetection.log
 
-$logDir = "C:\R3-IT"
+$logDir = "C:\temp"
 $logFile = "$logDir\DotNetDetection.log"
 
 # .NET Support Policy Reference:
@@ -655,3 +655,4 @@ try {
     exit 0
 
 }
+
