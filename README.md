@@ -10,3 +10,4 @@ All of the wrapper files are copies of each other, they each check to see if the
 
 ## powershell/remediation
 Some detection & remediation scripts I wrote for finding and removing old versions of .net and adobe acrobat. Read over the source first - there's a bunch of options.
+- I haven't tested *Remediation-AbandonedAdobeDirs-GroupBased.ps1* much, so I can't vouch for it.
