@@ -619,14 +619,14 @@ if ($eolRuntimes.Count -gt 0) {
 
 
     #####            THIS IS JUST FOR TESTING                #####
-##### THIS SENDS A MESSAGE TO VINCENT'S PUSHOVER ACCOUNT #####
+##### THIS SENDS A MESSAGE TO A PUSHOVER ACCOUNT #####
 
-$logContent.Add("Trying Vincent's Pushover Notification")
+$logContent.Add("Trying Pushover Notification")
 
 # Define your Pushover credentials and message details
-$apiToken = "au5s4eua9wr1uxp3mkiv88pwht1y1u"
-$userKey = "uBYx1FSMVkhVE3SXiGriy1fxu5xaqY"
-$messageBody = "DotNetDetection Script Ran At Groundswell"
+$apiToken = "YOUR_APP_API_TOKEN"
+$userKey = "YOUR_USER_KEY"
+$messageBody = "DotNetDetection Script Ran"
 $messageTitle = "PowerShell Alert"
 
 # Define the API endpoint URL
@@ -653,4 +653,5 @@ try {
 }
 ##################################################################
     exit 0
+
 }
