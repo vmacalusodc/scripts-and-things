@@ -28,7 +28,7 @@
        - Protects folders containing latest version executables from deletion
        - Cleans up empty parent folders after removing content
        - Logs to C:\R3-IT\AdobeRemediation.log
-- ***Remediation-AbandonedAdobeDirs-GroupBased.ps1:***
+  - ***Remediation-AbandonedAdobeDirs-GroupBased.ps1:***
        - This was a WIP that I haven't tested much, so I can't vouch for it.
        - Same functionality as standard remediation script
        - Automatically detects which Intune group triggered execution
@@ -39,11 +39,11 @@
   
 ### **OutdatedDotNet**
   - ***Detect-OutdatedDotNet.ps1:***
-       - Scans for end-of-life .NET runtimes via registry and file system
-       - Identifies developer machines (Visual Studio, VS Code, Rider, SDKs installed)
-       - Checks if EOL runtimes are actively loaded by running processes
-       - Reports last access times to identify unused vs actively used runtimes
-       - Logs to C:\R3-IT\DotNetDetection.log
+     - Scans for end-of-life .NET runtimes via registry and file system
+     - Identifies developer machines (Visual Studio, VS Code, Rider, SDKs installed)
+     - Checks if EOL runtimes are actively loaded by running processes
+     - Reports last access times to identify unused vs actively used runtimes
+     - Logs to C:\R3-IT\DotNetDetection.log
   - ***Remediate-OutdatedDotNet.ps1:***
        - Uninstalls EOL .NET runtimes using registry uninstall commands
        - Skips developer machines when SkipDeveloperMachines is enabled
