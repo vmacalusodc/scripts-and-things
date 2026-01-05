@@ -14,12 +14,12 @@ All of the wrapper files are copies of each other, they each check to see if the
 Some detection & remediation scripts I wrote for finding and removing old versions of .net and adobe acrobat. Read over the source first - there's a bunch of options.
 - **/AbandonedAdobeDirs**
   - ***Detect-AbandonedAdobeDirs.ps1:***
-Scans Program Files for empty or abandoned Adobe Acrobat/Reader directories
-Checks registry for installed Adobe Acrobat/Reader entries and versions
-Extracts version info from Adobe executables (Acrobat.exe, AcroRd32.exe, etc.)
-Compares found versions against target version and identifies outdated installs
-Detects low-file-count directories that may contain only leftover installers
-Logs to C:\R3-IT\AdobeDetection.log
+       - Scans Program Files for empty or abandoned Adobe Acrobat/Reader directories
+       - Checks registry for installed Adobe Acrobat/Reader entries and versions
+       - Extracts version info from Adobe executables (Acrobat.exe, AcroRd32.exe, etc.)
+       - Compares found versions against target version and identifies outdated installs
+       - Detects low-file-count directories that may contain only leftover installers
+       - Logs to C:\R3-IT\AdobeDetection.log
   - ***Remediate-AbandonedAdobeDirs.ps1:***
        - Parses detection log to identify abandoned directories and outdated files
        - Supports 4 remediation levels (0=test, 1=empty dirs only, 2=with validation, 3=aggressive)
