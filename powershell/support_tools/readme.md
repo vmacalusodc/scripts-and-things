@@ -1,10 +1,50 @@
+> [!CAUTION]
+>  As with everything you find online - read over the source and **use with caution**
+>  These worked for me but I can't guarantee shit won't break for you
+
 ## powershell/support_tools
 
-- All scripts can be run directly from the Scripts directory, but I created a .cmd file wrapper for each of them at the root level of support_tools so that you can just double click on them from the File Manager. Any filename that contains admin will need administrator escalation.
+- All scripts can be run directly from the Scripts directory, but I created a .cmd file wrapper for each of them at the root level of support_tools so that you can just double click on them from the File Manager. Any file that contains admin will need administrator escalation.
 
 - All of the wrapper files are copies of each other, they each check to see if the name of itself contains admin or not, and then calls a run_script.ps1 file in the scriptsdir, passes it's own name and if admin is needed. Run_script.ps1 in turn runs the matching ps1 script. This was done this way to prevent some sort of nuisance and I don't remember what. lol
 
-- **/ScriptsDir**
+### **/** (.cmd wrappers)
+  - ***DriveMapper.cmd:***
+    - Launches DriveMapper.ps1 (no admin required)
+
+  - ***IntuneSync.cmd:***
+    - Launches IntuneSync.ps1 (no admin required)
+
+  - ***SecurePrint_Install.cmd:***
+    - Launches SecurePrint_Install.ps1 (no admin required)
+
+  - ***TaskbarTool.cmd:***
+    - Launches TaskbarTool.ps1 (no admin required)
+
+  - ***RemoveOneDriveRegKey.cmd:***
+    - Displays instructions to run from a network share location
+    - Does not call RunScript.ps1
+
+  - ***RunCmd.cmd:***
+    - Alternative wrapper that accepts script name and admin flag as arguments
+    - Sets execution policy to Unrestricted
+
+  - ***admin_FixStuckAutomox.cmd:***
+    - Launches admin_FixStuckAutomox.ps1 (auto-elevates to admin)
+
+  - ***admin_IntuneHWID.cmd:***
+    - Launches admin_IntuneHWID.ps1 (auto-elevates to admin)
+
+  - ***admin_UpdateWindows.cmd:***
+    - Launches admin_UpdateWindows.ps1 (auto-elevates to admin)
+
+  - ***admin_UpdateWindows2.cmd:***
+    - Launches admin_UpdateWindows2.ps1 (auto-elevates to admin)
+
+  - ***admin_autopilot_esp_app_status.cmd:***
+    - Launches admin_autopilot_esp_app_status.ps1 (auto-elevates to admin)
+
+### **/ScriptsDir**
   - ***RunScript.ps1:***
     - Entry point for all .cmd wrappers
     - Auto-elevates to administrator if needed
