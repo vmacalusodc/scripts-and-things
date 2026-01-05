@@ -1,7 +1,9 @@
-# scripts-and-things
-Various scripts and things I made or use for work. As with everything you find online - read over the source, use with caution. 
+> [!CAUTION]
+>  As with everything you find online - read over the source, use with caution.
+>  These worked for me but I cant guarantee anything.
 
-**It worked for me but I cant guarantee anything.**
+# scripts-and-things
+Various scripts and things I made or use for work.  
 
 ## powershell/support_tools
 All scripts can be run directly from the Scripts directory, but I created a .cmd file wrapper for each of them at the root level of support_tools so that you can just double click on them from the File Manager. Any file that contains admin will need administrator escalation.
