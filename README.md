@@ -1,18 +1,19 @@
 > [!CAUTION]
->  As with everything you find online - read over the source, use with caution.
->  These worked for me but I cant guarantee anything.
+>  As with everything you find online - read over the source and **use with caution**
+>  These worked for me but I can't guarantee shit won't break for you
 
 # scripts-and-things
-Various scripts and things I made or use for work.  
+- Various scripts and things I made or use for work.  
 
 ## powershell/support_tools
-All scripts can be run directly from the Scripts directory, but I created a .cmd file wrapper for each of them at the root level of support_tools so that you can just double click on them from the File Manager. Any file that contains admin will need administrator escalation.
+- All scripts can be run directly from the Scripts directory, but I created a .cmd file wrapper for each of them at the root level of support_tools so that you can just double click on them from the File Manager. Any file that contains admin will need administrator escalation.
 
-All of the wrapper files are copies of each other, they each check to see if the name of itself contains admin or not, and then calls a run_script.ps1 file in the scriptsdir, passes it's own name and if admin is needed.  Run_script.ps1 in term runs the matching ps1 script. This was done this way to prevent some sort of nuesance and I don't remember what. lol
+- All of the wrapper files are copies of each other, they each check to see if the name of itself contains admin or not, and then calls a run_script.ps1 file in the scriptsdir, passes it's own name and if admin is needed.  Run_script.ps1 in term runs the matching ps1 script. This was done this way to prevent some sort of nuesance and I don't remember what. lol
 
 ## powershell/remediation
-Some detection & remediation scripts I wrote for finding and removing old versions of .net and adobe acrobat. Read over the source first - there's a bunch of options.
-- **/AbandonedAdobeDirs**
+- Some detection & remediation scripts I wrote for finding and removing old versions of .net and adobe acrobat. Read over the source first - there's a bunch of options.
+
+### **AbandonedAdobeDirs**
   - ***Detect-AbandonedAdobeDirs.ps1:***
        - Scans Program Files for empty or abandoned Adobe Acrobat/Reader directories
        - Checks registry for installed Adobe Acrobat/Reader entries and versions
@@ -27,14 +28,16 @@ Some detection & remediation scripts I wrote for finding and removing old versio
        - Protects folders containing latest version executables from deletion
        - Cleans up empty parent folders after removing content
        - Logs to C:\R3-IT\AdobeRemediation.log
-- ***Remediation-AbandonedAdobeDirs-GroupBased.ps1:*** - This was a WIP that I haven't tested much, so I can't vouch for it.
+- ***Remediation-AbandonedAdobeDirs-GroupBased.ps1:***
+       - This was a WIP that I haven't tested much, so I can't vouch for it.
        - Same functionality as standard remediation script
        - Automatically detects which Intune group triggered execution
        - Sets remediation level based on group membership (configurable mapping)
        - Attempts detection via Intune registry, SideCar policies, IME logs, environment variables, and command line args
        - Falls back to safe default level (0) if group cannot be determined
        - Logs detection method used for troubleshooting
-- **/OutdatedDotNet**
+  
+### **OutdatedDotNet**
   - ***Detect-OutdatedDotNet.ps1:***
        - Scans for end-of-life .NET runtimes via registry and file system
        - Identifies developer machines (Visual Studio, VS Code, Rider, SDKs installed)
@@ -48,7 +51,8 @@ Some detection & remediation scripts I wrote for finding and removing old versio
        - Handles both bundle EXE and MSI uninstall methods
        - Cleans up orphaned folders if uninstaller is missing
        - Logs to C:\R3-IT\DotNetRemediation.log
-- **/SecurityLogRotation**
+         
+### **SecurityLogRotation**
   - ***Detect-SecurityLogRotation.ps1:***
        - Checks if Security event log is set to AutoBackup mode
        - Verifies max log size matches target (200 MB)
