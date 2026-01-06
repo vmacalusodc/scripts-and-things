@@ -6,6 +6,9 @@
 .NOTES
     Author: IT Admin
     Version: 1.0
+    * Initial commit
+    Version: 1.1
+    * Changed $maxLogSizeBytes to 192 MB (201326592 bytes)
 #>
 
 $logName = "Security"
@@ -15,7 +18,7 @@ $archivePattern = "Archive-Security-*.evtx"
 
 # Optional: Set maximum log size (in bytes) - 100MB default
 # Adjust this based on how frequently you want rotation to occur
-$maxLogSizeBytes = 209715200  # 200 MB
+$maxLogSizeBytes = 201326592  # 192 MB
 
 $remediationNeeded = $false
 $errors = @()
