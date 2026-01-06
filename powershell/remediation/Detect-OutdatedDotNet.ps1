@@ -3,8 +3,11 @@
 # Returns exit code 0 if no EOL runtimes found (compliant)
 # Logs results to C:\R3-IT\DotNetDetection.log
 
-$logDir = "C:\temp"
+$logDir = "C:\R3-IT"
 $logFile = "$logDir\DotNetDetection.log"
+
+# Configuration: Skip detailed file enumeration (improves performance, reduces false positives)
+$skipFileEnumeration = $false  # Set to $true to skip listing individual files in runtime directories
 
 # .NET Support Policy Reference:
 # https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core
@@ -374,10 +377,11 @@ foreach ($dotnetRoot in $dotnetRoots) {
         foreach ($versionDir in $versionDirs) {
             $fullVersion = $versionDir.Name
             
-            # Get folder timestamps
-            $lastAccess = $versionDir.LastAccessTime
-            $lastWrite = $versionDir.LastWriteTime
-            $daysSinceAccess = [math]::Round(($today - $lastAccess).TotalDays)
+            # Get folder timestamps (folder metadata only - not affected by enumeration)
+            $folderLastAccess = $versionDir.LastAccessTime
+            $folderLastWrite = $versionDir.LastWriteTime
+            $daysSinceWrite = [math]::Round(($today - $folderLastWrite).TotalDays)
+            $daysSinceAccess = [math]::Round(($today - $folderLastAccess).TotalDays)
             
             # Check if this runtime is currently loaded
             $isCurrentlyLoaded = $loadedRuntimes.ContainsKey($versionDir.FullName)
@@ -392,7 +396,10 @@ foreach ($dotnetRoot in $dotnetRoots) {
                     Version = $fullVersion
                     RuntimeType = $runtimeType
                     Architecture = if ($dotnetRoot -like "*x86*") { "x86" } else { "x64" }
-                    LastAccessTime = $lastAccess
+                    LastAccessTime = $folderLastAccess
+                    LastWriteTime = $folderLastWrite
+                    DaysSinceAccess = $daysSinceAccess
+                    DaysSinceWrite = $daysSinceWrite
                     IsLoaded = $isCurrentlyLoaded
                 })
                 $logContent.Add("    [?] $fullVersion - Unknown version format")
@@ -412,9 +419,10 @@ foreach ($dotnetRoot in $dotnetRoots) {
                     Architecture = if ($dotnetRoot -like "*x86*") { "x86" } else { "x64" }
                     EolDate = $eolDate
                     IsEol = $isEol
-                    LastAccessTime = $lastAccess
-                    LastWriteTime = $lastWrite
+                    LastAccessTime = $folderLastAccess
+                    LastWriteTime = $folderLastWrite
                     DaysSinceAccess = $daysSinceAccess
+                    DaysSinceWrite = $daysSinceWrite
                     IsLoaded = $isCurrentlyLoaded
                 }
                 
@@ -422,12 +430,13 @@ foreach ($dotnetRoot in $dotnetRoots) {
                     $eolRuntimes.Add($runtimeInfo)
                     $daysPastEol = [math]::Round(($today - $eolDate).TotalDays)
                     
-                    # Build status indicators
+                    # Build status indicators (using LastWriteTime for "recent" determination)
                     $loadedIndicator = if ($isCurrentlyLoaded) { " [LOADED]" } else { "" }
-                    $accessIndicator = if ($daysSinceAccess -le 30) { " [RECENT]" } else { "" }
+                    $writeIndicator = if ($daysSinceWrite -le 30) { " [RECENT]" } else { "" }
                     
-                    $logContent.Add("    [EOL] $fullVersion - End of Life: $($eolDate.ToString('yyyy-MM-dd')) ($daysPastEol days ago)$loadedIndicator$accessIndicator")
-                    $logContent.Add("          Last access: $($lastAccess.ToString('yyyy-MM-dd HH:mm')) ($daysSinceAccess days ago)")
+                    $logContent.Add("    [EOL] $fullVersion - End of Life: $($eolDate.ToString('yyyy-MM-dd')) ($daysPastEol days ago)$loadedIndicator$writeIndicator")
+                    $logContent.Add("          Folder last write: $($folderLastWrite.ToString('yyyy-MM-dd HH:mm')) ($daysSinceWrite days ago)")
+                    $logContent.Add("          Folder last access: $($folderLastAccess.ToString('yyyy-MM-dd HH:mm')) ($daysSinceAccess days ago)")
                 } else {
                     $supportedRuntimes.Add($runtimeInfo)
                     $daysRemaining = [math]::Round(($eolDate - $today).TotalDays)
@@ -441,7 +450,10 @@ foreach ($dotnetRoot in $dotnetRoots) {
                     MajorMinor = $majorMinor
                     RuntimeType = $runtimeType
                     Architecture = if ($dotnetRoot -like "*x86*") { "x86" } else { "x64" }
-                    LastAccessTime = $lastAccess
+                    LastAccessTime = $folderLastAccess
+                    LastWriteTime = $folderLastWrite
+                    DaysSinceAccess = $daysSinceAccess
+                    DaysSinceWrite = $daysSinceWrite
                     IsLoaded = $isCurrentlyLoaded
                 })
                 $logContent.Add("    [?] $fullVersion - EOL date not in database")
@@ -508,9 +520,9 @@ if ($eolRuntimes.Count -gt 0) {
     $logContent.Add("")
     $logContent.Add("[END OF LIFE] $($eolRuntimes.Count) runtime(s)")
     
-    # Separate into loaded/recent vs inactive
-    $activeEol = $eolRuntimes | Where-Object { $_.IsLoaded -or $_.DaysSinceAccess -le 30 }
-    $inactiveEol = $eolRuntimes | Where-Object { -not $_.IsLoaded -and $_.DaysSinceAccess -gt 30 }
+    # Separate into loaded/recent vs inactive (using LastWriteTime to avoid false positives)
+    $activeEol = $eolRuntimes | Where-Object { $_.IsLoaded -or $_.DaysSinceWrite -le 30 }
+    $inactiveEol = $eolRuntimes | Where-Object { -not $_.IsLoaded -and $_.DaysSinceWrite -gt 30 }
     
     if ($activeEol.Count -gt 0) {
         $logContent.Add("")
@@ -519,35 +531,40 @@ if ($eolRuntimes.Count -gt 0) {
             $loadedTag = if ($rt.IsLoaded) { "[LOADED NOW] " } else { "" }
             $logContent.Add("    $loadedTag$($rt.Path)")
             $logContent.Add("      .NET $($rt.MajorMinor) - EOL: $($rt.EolDate.ToString('yyyy-MM-dd'))")
-            $logContent.Add("      Last accessed: $($rt.LastAccessTime.ToString('yyyy-MM-dd HH:mm')) ($($rt.DaysSinceAccess) days ago)")
+            $logContent.Add("      Folder last write: $($rt.LastWriteTime.ToString('yyyy-MM-dd HH:mm')) ($($rt.DaysSinceWrite) days ago)")
+            $logContent.Add("      Folder last access: $($rt.LastAccessTime.ToString('yyyy-MM-dd HH:mm')) ($($rt.DaysSinceAccess) days ago)")
             if ($rt.IsLoaded) {
                 $logContent.Add("      Processes: $($loadedRuntimes[$rt.Path] -join ', ')")
             }
             
-            # Show recently accessed files in this runtime directory
-            $logContent.Add("      Recently accessed files (last 30 days):")
-            try {
-                $recentFiles = Get-ChildItem -Path $rt.Path -Recurse -File -ErrorAction SilentlyContinue |
-                    Where-Object { ($today - $_.LastAccessTime).TotalDays -le 30 } |
-                    Sort-Object LastAccessTime -Descending |
-                    Select-Object -First 15
-                
-                if ($recentFiles) {
-                    foreach ($file in $recentFiles) {
-                        $fileAge = [math]::Round(($today - $file.LastAccessTime).TotalDays)
-                        $relativePath = $file.FullName.Substring($rt.Path.Length + 1)
-                        $logContent.Add("        [$fileAge d] $relativePath")
+            # Show recently modified files in this runtime directory (only if not skipping enumeration)
+            if (-not $skipFileEnumeration) {
+                $logContent.Add("      Recently modified files (last 30 days):")
+                try {
+                    $recentFiles = Get-ChildItem -Path $rt.Path -Recurse -File -ErrorAction SilentlyContinue |
+                        Where-Object { ($today - $_.LastWriteTime).TotalDays -le 30 } |
+                        Sort-Object LastWriteTime -Descending |
+                        Select-Object -First 15
+                    
+                    if ($recentFiles) {
+                        foreach ($file in $recentFiles) {
+                            $fileAge = [math]::Round(($today - $file.LastWriteTime).TotalDays)
+                            $relativePath = $file.FullName.Substring($rt.Path.Length + 1)
+                            $logContent.Add("        [$fileAge d] $relativePath")
+                        }
+                        $totalRecent = (Get-ChildItem -Path $rt.Path -Recurse -File -ErrorAction SilentlyContinue |
+                            Where-Object { ($today - $_.LastWriteTime).TotalDays -le 30 }).Count
+                        if ($totalRecent -gt 15) {
+                            $logContent.Add("        ... and $($totalRecent - 15) more files")
+                        }
+                    } else {
+                        $logContent.Add("        (no files modified in last 30 days)")
                     }
-                    $totalRecent = (Get-ChildItem -Path $rt.Path -Recurse -File -ErrorAction SilentlyContinue |
-                        Where-Object { ($today - $_.LastAccessTime).TotalDays -le 30 }).Count
-                    if ($totalRecent -gt 15) {
-                        $logContent.Add("        ... and $($totalRecent - 15) more files")
-                    }
-                } else {
-                    $logContent.Add("        (no files accessed in last 30 days)")
+                } catch {
+                    $logContent.Add("        (error reading directory)")
                 }
-            } catch {
-                $logContent.Add("        (error reading directory)")
+            } else {
+                $logContent.Add("      [File enumeration skipped - see \$skipFileEnumeration setting]")
             }
         }
     }
@@ -555,11 +572,12 @@ if ($eolRuntimes.Count -gt 0) {
     if ($inactiveEol.Count -gt 0) {
         $logContent.Add("")
         $logContent.Add("  ** LIKELY SAFE TO REMOVE ** ($($inactiveEol.Count) runtime(s))")
-        $logContent.Add("  (Not loaded, last access > 30 days ago)")
+        $logContent.Add("  (Not loaded, last write > 30 days ago)")
         foreach ($rt in $inactiveEol | Sort-Object { $_.Path }) {
             $logContent.Add("    $($rt.Path)")
             $logContent.Add("      .NET $($rt.MajorMinor) - EOL: $($rt.EolDate.ToString('yyyy-MM-dd'))")
-            $logContent.Add("      Last accessed: $($rt.LastAccessTime.ToString('yyyy-MM-dd HH:mm')) ($($rt.DaysSinceAccess) days ago)")
+            $logContent.Add("      Folder last write: $($rt.LastWriteTime.ToString('yyyy-MM-dd HH:mm')) ($($rt.DaysSinceWrite) days ago)")
+            $logContent.Add("      Folder last access: $($rt.LastAccessTime.ToString('yyyy-MM-dd HH:mm')) ($($rt.DaysSinceAccess) days ago)")
         }
     }
 }
@@ -576,7 +594,7 @@ if ($eolRuntimes.Count -gt 0) {
     foreach ($rt in $eolRuntimes | Sort-Object { $_.Path }) {
         $flags = @()
         if ($rt.IsLoaded) { $flags += "LOADED" }
-        if ($rt.DaysSinceAccess -le 30) { $flags += "RECENT" }
+        if ($rt.DaysSinceWrite -le 30) { $flags += "RECENT" }
         if ($isDeveloperMachine) { $flags += "DEV-MACHINE" }
         
         $flagStr = if ($flags.Count -gt 0) { " [" + ($flags -join ", ") + "]" } else { "" }
@@ -586,7 +604,7 @@ if ($eolRuntimes.Count -gt 0) {
     $logContent.Add("")
     $logContent.Add($divider)
     
-    $activeCount = ($eolRuntimes | Where-Object { $_.IsLoaded -or $_.DaysSinceAccess -le 30 }).Count
+    $activeCount = ($eolRuntimes | Where-Object { $_.IsLoaded -or $_.DaysSinceWrite -le 30 }).Count
     $summaryNote = ""
     if ($activeCount -gt 0) {
         $summaryNote = " ($activeCount potentially in use - review before remediation)"
@@ -619,15 +637,28 @@ if ($eolRuntimes.Count -gt 0) {
 
 
     #####            THIS IS JUST FOR TESTING                #####
-##### THIS SENDS A MESSAGE TO A PUSHOVER ACCOUNT #####
+##### THIS SENDS A MESSAGE TO VINCENT'S PUSHOVER ACCOUNT #####
 
-$logContent.Add("Trying Pushover Notification")
+$logContent.Add("Trying Vincent's Pushover Notification")
+
+# Device and user identification
+$deviceName = $env:COMPUTERNAME
+$primaryUser = (Get-WmiObject -Class Win32_ComputerSystem).UserName
+$primaryUser = $primaryUser -replace '.*\\', ''  # Removes "DOMAIN\" prefix
+if (-not $primaryUser) {
+    # Fallback if no one is logged on
+    $primaryUser = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI" -Name "LastLoggedOnUser" -ErrorAction SilentlyContinue).LastLoggedOnUser
+}
+if (-not $primaryUser) {
+    $primaryUser = "No user logged on"
+}
+$scriptName = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name) -replace '^(Detect-|Remediate-)', ''
 
 # Define your Pushover credentials and message details
-$apiToken = "YOUR_APP_API_TOKEN"
-$userKey = "YOUR_USER_KEY"
-$messageBody = "DotNetDetection Script Ran"
-$messageTitle = "PowerShell Alert"
+$apiToken = ""
+$userKey = ""
+$messageBody = "Script Ran on $deviceName ($primaryUser)"
+$messageTitle = "Alert from $scriptName"
 
 # Define the API endpoint URL
 $url = "https://api.pushover.net/1/messages.json"
@@ -653,6 +684,4 @@ try {
 }
 ##################################################################
     exit 0
-
 }
-
