@@ -15,7 +15,7 @@ $SkipDeveloperMachines = $true
 $SkipLoadedRuntimes = $true
 
 # Skip runtimes accessed within this many days (0 to disable)
-$SkipRecentlyAccessedDays = 0
+$SkipRecentlyModifiedDays = 0
 
 # .NET Support Policy Reference:
 # https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core
@@ -57,7 +57,7 @@ $logContent.Add("Settings:")
 $logContent.Add("  PerformUninstall: $PerformUninstall")
 $logContent.Add("  SkipDeveloperMachines: $SkipDeveloperMachines")
 $logContent.Add("  SkipLoadedRuntimes: $SkipLoadedRuntimes")
-$logContent.Add("  SkipRecentlyAccessedDays: $SkipRecentlyAccessedDays")
+$logContent.Add("  SkipRecentlyModifiedDays: $SkipRecentlyModifiedDays")
 $logContent.Add($divider)
 
 # =============================================================================
@@ -195,11 +195,13 @@ foreach ($regPath in $registryPaths) {
                         # Check if loaded
                         $isLoaded = $loadedRuntimePaths.Contains($runtimePath)
                         
-                        # Check last access time
+                        # Check last write time (not affected by enumeration)
+                        $daysSinceWrite = -1
                         $daysSinceAccess = -1
                         if (Test-Path $runtimePath) {
                             $folderInfo = Get-Item $runtimePath -ErrorAction SilentlyContinue
                             if ($folderInfo) {
+                                $daysSinceWrite = [math]::Round(($today - $folderInfo.LastWriteTime).TotalDays)
                                 $daysSinceAccess = [math]::Round(($today - $folderInfo.LastAccessTime).TotalDays)
                             }
                         }
@@ -212,6 +214,7 @@ foreach ($regPath in $registryPaths) {
                             UninstallString = $entry.UninstallString
                             RuntimePath = $runtimePath
                             IsLoaded = $isLoaded
+                            DaysSinceWrite = $daysSinceWrite
                             DaysSinceAccess = $daysSinceAccess
                         })
                     }
@@ -245,10 +248,11 @@ foreach ($component in $uniqueComponents) {
         continue
     }
     
-    # Check recent access
-    if ($SkipRecentlyAccessedDays -gt 0 -and $component.DaysSinceAccess -ge 0 -and $component.DaysSinceAccess -le $SkipRecentlyAccessedDays) {
-        $logContent.Add("  [SKIP] Runtime was accessed $($component.DaysSinceAccess) days ago (threshold: $SkipRecentlyAccessedDays)")
-        $skipped.Add("$($component.DisplayName) (recent access)")
+    # Check recent modification (using LastWriteTime to avoid false positives)
+    if ($SkipRecentlyModifiedDays -gt 0 -and $component.DaysSinceWrite -ge 0 -and $component.DaysSinceWrite -le $SkipRecentlyModifiedDays) {
+        $logContent.Add("  [SKIP] Runtime was modified $($component.DaysSinceWrite) days ago (threshold: $SkipRecentlyModifiedDays)")
+        $logContent.Add("        Last write: $($component.DaysSinceWrite) days ago | Last access: $($component.DaysSinceAccess) days ago")
+        $skipped.Add("$($component.DisplayName) (recent modification)")
         continue
     }
     
@@ -459,15 +463,32 @@ if ($failed.Count -gt 0) {
     $outputText = $logContent -join "`n"
     $outputText | Out-File -FilePath $logFile -Force -Encoding UTF8
     Write-Host $outputText
-    exit 0
-}
 
+
+
+    #####            THIS IS JUST FOR TESTING                #####
+##### THIS SENDS A MESSAGE TO VINCENT'S PUSHOVER ACCOUNT #####
+
+$logContent.Add("Trying Vincent's Pushover Notification")
+
+# Device and user identification
+$deviceName = $env:COMPUTERNAME
+$primaryUser = (Get-WmiObject -Class Win32_ComputerSystem).UserName
+$primaryUser = $primaryUser -replace '.*\\', ''  # Removes "DOMAIN\" prefix
+if (-not $primaryUser) {
+    # Fallback if no one is logged on
+    $primaryUser = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI" -Name "LastLoggedOnUser" -ErrorAction SilentlyContinue).LastLoggedOnUser
+}
+if (-not $primaryUser) {
+    $primaryUser = "No user logged on"
+}
+$scriptName = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name) -replace '^(Detect-|Remediate-)', ''
 
 # Define your Pushover credentials and message details
-$apiToken = "YOUR_APP_API_TOKEN"
-$userKey = "YOUR_USER_KEY"
-$messageBody = "This is a test notification from PowerShell!"
-$messageTitle = "PowerShell Alert"
+$apiToken = ""
+$userKey = ""
+$messageBody = "Script Ran on $deviceName ($primaryUser)"
+$messageTitle = "Alert from $scriptName"
 
 # Define the API endpoint URL
 $url = "https://api.pushover.net/1/messages.json"
@@ -484,10 +505,14 @@ $body = @{
 try {
     $response = Invoke-RestMethod -Uri $url -Method Post -Body $body
     if ($response.status -eq 1) {
-        Write-Host "Pushover message sent successfully!"
+        $logContent.Add("Pushover message sent successfully!")
     } else {
-        Write-Host "Failed to send Pushover message. Response: $($response.errors)"
+        $logContent.Add("Failed to send Pushover message. Response: $($response.errors)")
     }
 } catch {
-    Write-Error "An error occurred: $_"
+    $logContent.Add("An error occurred: $_")
 }
+##################################################################
+    exit 0
+}
+
