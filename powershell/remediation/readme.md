@@ -1,3 +1,4 @@
+## Remediation Scripts
 ### **AbandonedAdobeDirs**
   - ***Detect-AbandonedAdobeDirs.ps1:***
        - Scans Program Files for empty or abandoned Adobe Acrobat/Reader directories
