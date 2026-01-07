@@ -1,0 +1,82 @@
+name: Generate README
+
+on:
+  push:
+    paths:
+      - 'readme.stub'
+      - 'disclaimer.md'
+      - '**/readme.md'
+      - '!README.md'  # Don't trigger on the generated file
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  generate-readme:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Generate README from template
+        run: |
+          #!/bin/bash
+          set -e
+          
+          TEMPLATE="readme.stub"
+          OUTPUT="README.md"
+          
+          if [ ! -f "$TEMPLATE" ]; then
+            echo "Error: Template file '$TEMPLATE' not found"
+            exit 1
+          fi
+          
+          # Read the template
+          content=$(cat "$TEMPLATE")
+          
+          # Find all {path} placeholders and replace with file contents
+          # Using grep to find patterns, then loop through them
+          while IFS= read -r match; do
+            # Extract the path from {path}
+            filepath="${match:1:-1}"  # Remove { and }
+            
+            if [ -f "$filepath" ]; then
+              echo "Inserting: $filepath"
+              # Read file content
+              file_content=$(cat "$filepath")
+              # Escape special characters for sed replacement
+              escaped_match=$(printf '%s\n' "$match" | sed 's/[[\.*^$()+?{|]/\\&/g')
+              # Use awk for multi-line replacement (more reliable than sed)
+              content=$(awk -v pattern="$match" -v replacement="$file_content" '{
+                gsub(pattern, replacement)
+                print
+              }' <<< "$content")
+            else
+              echo "Warning: File '$filepath' not found, leaving placeholder"
+            fi
+          done < <(grep -oE '\{[^}]+\}' "$TEMPLATE" | sort -u)
+          
+          # Write the generated README
+          echo "$content" > "$OUTPUT"
+          echo "Generated $OUTPUT successfully"
+      
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet README.md; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Commit and push if changed
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git commit -m "docs: auto-generate README from template"
+          git push
