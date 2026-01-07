@@ -1,5 +1,6 @@
+$scriptName = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name)
 $logDir = "C:\R3-IT"
-$logFile = "$logDir\VSCodeUpdate.log"
+$logFile = "$logDir\$scriptName.log"
 $installationsFile = "$logDir\VSCodeInstallations.txt"
 $minVersion = [version]"1.104.0"
 

@@ -11,8 +11,10 @@
 $remediationLevel = 2
 
 $logDir = "C:\R3-IT"
-$detectionLog = "$logDir\AdobeDetection.log"
-$logFile = "$logDir\AdobeRemediation.log"
+$detectionLog = "$logDir\Detect-AbandonedAdobe.log"
+$scriptName = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name)
+$logDir = "C:\R3-IT"
+$logFile = "$logDir\$scriptName.log"
 
 $rootAdobeFolders = @(
     "C:\Program Files\Adobe",
@@ -42,7 +44,7 @@ if (-not (Test-Path $detectionLog)) {
     $logContent.Add("ERROR: Detection log not found at $detectionLog")
     $logContent.Add("Run detection script first.")
     $outputText = $logContent -join "`n"
-    $outputText | Out-File -FilePath $logFile -Force -Encoding UTF8
+    $outputText | Out-File -FilePath $logFile -Force #-Encoding UTF8
     Write-Host $outputText
     exit 1
 }
@@ -457,7 +459,7 @@ if ($remediationLevel -eq 0) {
 
 # Write log
 $outputText = $logContent -join "`n"
-$outputText | Out-File -FilePath $logFile -Force -Encoding UTF8
+$outputText | Out-File -FilePath $logFile -Force #-Encoding UTF8
 
 # Output for Intune
 Write-Host $outputText

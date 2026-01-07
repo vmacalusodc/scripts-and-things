@@ -1,5 +1,7 @@
 # Detect-TeamsClassic.ps1
-$logFile = "C:\R3-IT\TeamsClassic_Detection.log"
+$scriptName = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name)
+$logDir = "C:\R3-IT"
+$logFile = "$logDir\$scriptName.log"
 
 try {
     # Overwrite log file on each run

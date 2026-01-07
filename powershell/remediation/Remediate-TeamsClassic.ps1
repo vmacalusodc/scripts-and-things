@@ -1,11 +1,13 @@
 # Remediate-TeamsClassic.ps1
-$logFile = "C:\R3-IT\TeamsClassic_Remediation.log"
+$scriptName = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name)
+$logDir = "C:\R3-IT"
+$logFile = "$logDir\$scriptName.log"
 
 try {
-    "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Starting Teams Classic remediation" | Out-File -FilePath $logFile -Append -Encoding UTF8
+    # Overwrite log file on each run
+    "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Starting Teams Classic remediation" | Out-File -FilePath $logFile -Force -Encoding UTF8
     
-    $remediationSuccess = $true
-    
+  
     # Step 1: Stop all Teams processes
     "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') - Stopping Teams processes..." | Out-File -FilePath $logFile -Append -Encoding UTF8
     Get-Process -Name "Teams" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue

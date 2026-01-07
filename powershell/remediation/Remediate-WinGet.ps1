@@ -1,5 +1,6 @@
+$scriptName = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name)
 $logDir = "C:\R3-IT"
-$logFile = "$logDir\Remediate-WinGetUpdate.log"
+$logFile = "$logDir\$scriptName.log"
 $excludeFile = "$logDir\WinGetExclude.txt"
 
 # Function to remove progress bars and spinner lines from winget output

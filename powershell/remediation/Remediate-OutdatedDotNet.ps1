@@ -2,8 +2,10 @@
 # Uninstalls end-of-life .NET runtimes using registry uninstall commands
 # Logs results to C:\R3-IT\DotNetRemediation.log
 
+$scriptName = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name)
 $logDir = "C:\R3-IT"
-$logFile = "$logDir\DotNetRemediation.log"
+$logFile = "$logDir\$scriptName.log"
+
 
 # Safety switches - set to $true to enable actual uninstallation
 $PerformUninstall = $true
@@ -482,11 +484,10 @@ if (-not $primaryUser) {
 if (-not $primaryUser) {
     $primaryUser = "No user logged on"
 }
-$scriptName = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name) -replace '^(Detect-|Remediate-)', ''
 
 # Define your Pushover credentials and message details
-$apiToken = ""
-$userKey = ""
+$apiToken = "au5s4eua9wr1uxp3mkiv88pwht1y1u"
+$userKey = "uBYx1FSMVkhVE3SXiGriy1fxu5xaqY"
 $messageBody = "Script Ran on $deviceName ($primaryUser)"
 $messageTitle = "Alert from $scriptName"
 

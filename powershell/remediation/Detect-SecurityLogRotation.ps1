@@ -3,8 +3,9 @@
 # Returns exit code 0 if compliant
 # Logs results to C:\R3-IT\SecurityLogRotationDetection.log
 
+$scriptName = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name)
 $logDir = "C:\R3-IT"
-$logFile = "$logDir\SecurityLogRotationDetection.log"
+$logFile = "$logDir\$scriptName.log"
 
 $eventLogName = "Security"
 $maxArchives = 3

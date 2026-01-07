@@ -3,8 +3,9 @@
 # Returns exit code 0 if no EOL runtimes found (compliant)
 # Logs results to C:\R3-IT\DotNetDetection.log
 
+$scriptName = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name)
 $logDir = "C:\R3-IT"
-$logFile = "$logDir\DotNetDetection.log"
+$logFile = "$logDir\$scriptName.log"
 
 # Configuration: Skip detailed file enumeration (improves performance, reduces false positives)
 $skipFileEnumeration = $false  # Set to $true to skip listing individual files in runtime directories
@@ -655,8 +656,8 @@ if (-not $primaryUser) {
 $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($MyInvocation.MyCommand.Name) -replace '^(Detect-|Remediate-)', ''
 
 # Define your Pushover credentials and message details
-$apiToken = ""
-$userKey = ""
+$apiToken = "au5s4eua9wr1uxp3mkiv88pwht1y1u"
+$userKey = "uBYx1FSMVkhVE3SXiGriy1fxu5xaqY"
 $messageBody = "Script Ran on $deviceName ($primaryUser)"
 $messageTitle = "Alert from $scriptName"
 
