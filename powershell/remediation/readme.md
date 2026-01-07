@@ -1,6 +1,3 @@
-## powershell/remediation
-- Some detection & remediation scripts I wrote.
-
 ### **AbandonedAdobeDirs**
   - ***Detect-AbandonedAdobeDirs.ps1:***
        - Scans Program Files for empty or abandoned Adobe Acrobat/Reader directories
