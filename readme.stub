@@ -1,10 +1,8 @@
 {disclaimer.md}
 
 # Scripts and Things
-* This is a collection of scripts I've written.
+* This is a collection of works related scripts I've written.
 
-## Powershell / Remediation
 {powershell/remediation/readme.md}
 
-## Powershell / Support Tools
 {powershell/support_tools/readme.md}
