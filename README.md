@@ -3,9 +3,8 @@
 >  - These worked for me but I can't guarantee shit won't break for you
 
 # Scripts and Things
-* This is a collection of scripts I've written.
+* This is a collection of works related scripts I've written.
 
-## Powershell / Remediation
 ## powershell/remediation
 - Some detection {powershell/remediation/readme.md} remediation scripts I wrote.
 
@@ -114,7 +113,6 @@
        - Cleans progress bar artifacts from output logging
        - Logs to C:R3-ITRemediate-WinGet.log
 
-## Powershell / Support Tools
 > [!CAUTION]
 >  - As with everything you find online - read over the source and <ins>*use with caution*</ins>
 >  - These worked for me but I can't guarantee shit won't break for you
