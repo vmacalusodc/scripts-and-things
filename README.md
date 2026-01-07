@@ -1,11 +1,11 @@
+# Scripts and Things
+* This is a collection of works related scripts I've written.
+
 > [!CAUTION]
 >  - As with everything you find online - read over the source and <ins>*use with caution*</ins>
 >  - These worked for me but I can't guarantee shit won't break for you
 
-# Scripts and Things
-* This is a collection of works related scripts I've written.
-
-## [powershell/remediation](powershell/remediation)
+## [./Powershell/Remediation](powershell/remediation)
 ## Remediation Scripts
 ### **AbandonedAdobeDirs**
   - ***Detect-AbandonedAdobeDirs.ps1:***
@@ -112,7 +112,7 @@
        - Cleans progress bar artifacts from output logging
        - Logs to C:R3-ITRemediate-WinGet.log
 
-## [powershell/support_tools](powershell/support_tools)
+## [./Powershell/Support_tools](powershell/support_tools)
 > [!CAUTION]
 >  - As with everything you find online - read over the source and <ins>*use with caution*</ins>
 >  - These worked for me but I can't guarantee shit won't break for you
